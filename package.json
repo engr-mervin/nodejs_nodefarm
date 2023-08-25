@@ -1,0 +1,19 @@
+{
+  "name": "starter",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "tscompile": "tsc -w -p .",
+    "tsinit": "tsc --init",
+    "start": "nodemon index.js"
+  },
+  "keywords": [],
+  "type": "module",
+  "author": "John Mervin C. Bocatcat <mervin@eonox.dev> (https://www.eonox.dev/)",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "@types/node": "^20.5.4"
+  }
+}
