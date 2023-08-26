@@ -1,61 +1,22 @@
-import http from "http";
-import fs from "fs";
-//SYNCHRONOUS (BLOCKING)
-// const textIn = fs.readFileSync("./txt/input.txt", "utf-8");
-// console.log(textIn);
-// const textOut = `This is what we know about the avocado: ${textIn}.\nCreated on ${Date.now()}`;
-// fs.writeFileSync("./txt/output.txt", textOut);
-// console.log("File written");
-//ASYNCHRONOUS(NON-BLOCKING)
-// fs.readFile("./txt/start.txt", "utf-8", (err, data1) => {
-//   if (err) return console.log("ERROR! 👌");
-//   console.log(data1);
-//   fs.readFile(`./txt/${data1}.txt`, "utf-8", (err, data2) => {
-//     console.log(data2);
-//     fs.readFile(`./txt/append.txt`, "utf-8", (err, data3) => {
-//       console.log(data3);
-//       fs.writeFile("./txt/final.txt", `${data2}\n${data3}`, "utf-8", () => {
-//         return;
-//       });
-//     });
-//   });
-// });
-// console.log("Will read file");
-////////////////////////////////////////////////////////////
-//SERVER
-////////////////////////////////////////////////////////////
-let apiData;
+import http from "node:http";
+import url from "node:url";
+import fs from "node:fs";
+import path from "node:path";
+import buildOverviewHTML from "./lib/buildOverviewHTML.js";
+const __dirname = path.dirname(url.fileURLToPath(import.meta.url));
+console.log(__dirname);
+// type CallBackErrData = (err: string | null, data: any) => void;
+// type CallBackData = (data: any) => any;
+const apiData = JSON.parse(fs.readFileSync(`${__dirname}/dev-data/data.json`, "utf-8"));
+const overviewHTML = fs.readFileSync(`${__dirname}/templates/template-overview.html`, "utf-8");
+const cardHTML = fs.readFileSync(`${__dirname}/templates/template-card.html`, "utf-8");
 const server = http.createServer((req, res) => {
     const pathName = req.url;
     if (pathName === "/favicon.ico")
         return;
-    // console.log(req.url);
-    //////////////////////////////////////////////////////////////
-    //OVERVIEW
-    /////////////////////////////////////////////////////////////
     if ((pathName === null || pathName === void 0 ? void 0 : pathName.startsWith("/overview")) || pathName === "/") {
-        res.end("Hello from the server!");
+        res.end(buildOverviewHTML(overviewHTML, cardHTML, apiData));
     }
-    //////////////////////////////////////////////////////////////
-    //API
-    /////////////////////////////////////////////////////////////
-    else if (pathName === "/api") {
-        res.writeHead(200, { "Content-type": "application/json" });
-        if (apiData)
-            return res.end(apiData);
-        fs.readFile(`./dev-data/data.json`, "utf-8", (err, data) => {
-            if (err) {
-                return res.end("Something went wrong");
-            }
-            // const productData = JSON.parse(data);
-            // console.log(productData);
-            apiData = data;
-            res.end(data);
-        });
-    }
-    //////////////////////////////////////////////////////////////
-    //PRODUCT
-    /////////////////////////////////////////////////////////////
     else if (pathName === null || pathName === void 0 ? void 0 : pathName.startsWith("/product")) {
         res.end("This is the PRODUCT");
     }
