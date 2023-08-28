@@ -1,20 +1,14 @@
 import { ProductData } from "../types/types";
-import buildCardHTML from "./buildCardHTML.js";
+import buildProductHTML from "./buildProductHTML.js";
 
 const buildOverviewHTML = function (
   html: string,
   cardHTML: string,
   data: ProductData[]
 ): string {
-  let cardsHTML: string = "";
-  data.forEach((productData) => {
-    cardsHTML += buildCardHTML(cardHTML, productData);
-  });
+  const cardsHTML = data.map((el) => buildProductHTML(cardHTML, el)).join("");
 
-  console.log(cardsHTML);
-  html = html.replace(/{%PRODUCT_CARDS%}/g, cardsHTML);
-
-  return html;
+  return html.replace(/{%PRODUCT_CARDS%}/g, cardsHTML);
 };
 
 export default buildOverviewHTML;

@@ -8,4 +8,5 @@ export type ProductData = {
   price: string;
   organic: boolean;
   description: string;
+  slugName: string | undefined;
 };
